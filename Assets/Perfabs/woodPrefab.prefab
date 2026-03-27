@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8203001197229357281}
   - component: {fileID: 291479021297704250}
   - component: {fileID: 7290470785047034489}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: woodPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.0001, y: 0.0001}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!50 &7290470785047034489
 Rigidbody2D:
@@ -139,7 +139,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7909690208430338753}
-  m_BodyType: 2
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
