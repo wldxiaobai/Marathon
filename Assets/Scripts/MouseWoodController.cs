@@ -43,6 +43,10 @@ public class MouseWoodController : MonoBehaviour
     /// 木头当前的旋转角度（度）
     /// </summary>
     private float currentWoodRotation = 0f;
+    /// <summary>
+    /// 木头预制体的缩放
+    /// </summary>
+    private Vector3 woodScale = Vector3.one;
 
     void Start()
     {
@@ -51,6 +55,9 @@ public class MouseWoodController : MonoBehaviour
 
         // 获取木头预制体的Collider2D，用于放置检测
         woodCollider = WoodPool.Instance.GetWoodCollider();
+
+        // 获取木头预制体的缩放
+        woodScale = WoodPool.Instance.GetWoodScale();
     }
 
     void Update()
@@ -178,6 +185,9 @@ public class MouseWoodController : MonoBehaviour
             cursorSpriteRenderer.sprite = woodSprite;
             cursorSpriteRenderer.sortingOrder = 1000;
 
+            // 应用木头预制体的缩放
+            cursorWoodInstance.transform.localScale = woodScale;
+
             // 设置为半透明
             Color color = cursorSpriteRenderer.color;
             color.a = cursorWoodAlpha;
@@ -187,6 +197,8 @@ public class MouseWoodController : MonoBehaviour
         {
             // 创建一个空的占位符
             cursorWoodInstance = new GameObject("CursorWood");
+            // 即使是占位符也应用缩放
+            cursorWoodInstance.transform.localScale = woodScale;
         }
 
         if (cursorWoodInstance != null && mainCam != null)
@@ -221,6 +233,10 @@ public class MouseWoodController : MonoBehaviour
         // 创建临时的检测物体，用于进行碰撞检测
         GameObject tempCheckObject = new GameObject("_TempCollisionCheck");
         tempCheckObject.transform.position = position;
+        // 应用木头预制体的缩放
+        tempCheckObject.transform.localScale = woodScale;
+        // 应用木头的旋转角度
+        tempCheckObject.transform.rotation = Quaternion.Euler(0, 0, currentWoodRotation);
 
         // 复制木头的Collider2D到临时对象
         Collider2D tempCollider = tempCheckObject.AddComponent(woodCollider.GetType()) as Collider2D;

@@ -165,7 +165,7 @@ public class player : MonoBehaviour
             if (isGrounded)
             {
                 // 计算跳跃速度：背包满时跳跃速度降低，背包空时为基础跳跃速度
-                rb.velocity = new Vector2(rb.velocity.x, jumpV_instant * Mathf.Sqrt(1 - (woodCount / (float)backpackCapacity)));
+                rb.velocity = new Vector2(rb.velocity.x, jumpV_instant * Mathf.Sqrt(1f - 0.9f * (woodCount / (float)backpackCapacity)));
             }
         }
     }

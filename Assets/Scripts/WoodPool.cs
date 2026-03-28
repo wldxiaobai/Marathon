@@ -200,6 +200,18 @@ public class WoodPool : MonoBehaviour
     }
 
     /// <summary>
+    /// 获取木头预制体的缩放
+    /// </summary>
+    /// <returns>返回木头预制体的transform.scale</returns>
+    public Vector3 GetWoodScale()
+    {
+        if (woodPrefab == null)
+            return Vector3.one;
+
+        return woodPrefab.transform.localScale;
+    }
+
+    /// <summary>
     /// 清空对象池
     /// </summary>
     public void ClearPool()
