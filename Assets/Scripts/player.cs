@@ -52,9 +52,30 @@ public class player : MonoBehaviour
     [Tooltip("背包满时的横向移动速度倍率")]
     private float moveSpeedRateWhenFull = 0.2f;
 
+    [Header("Animation")]
+    [SerializeField]
+    [Tooltip("动画机bool参数：IsWalking")]
+    private string isWalkingParam = "IsWalking";
+    [SerializeField]
+    [Tooltip("动画机bool参数：Grounded")]
+    private string groundedParam = "Grounded";
+    [SerializeField]
+    [Tooltip("动画机Trigger：StartJump")]
+    private string startJumpTrigger = "StartJump";
+    [SerializeField]
+    [Tooltip("动画机Trigger：ReachTheTop")]
+    private string reachTheTopTrigger = "ReachTheTop";
+
+    private Animator animator;
+    /// <summary>
+    /// 记录上一帧的y轴速度，用于检测跳跃顶点
+    /// </summary>
+    private float previousVelocityY = 0f;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -62,8 +83,11 @@ public class player : MonoBehaviour
         MoveUnderControl(); 
         GroundCheck();
         CheckInputToJump();
+        CheckJumpApex();
 
         FlipController();
+
+        previousVelocityY = rb.velocity.y;
     }
     /// <summary>
     /// 在Scene视图中绘制地面检测射线
@@ -121,6 +145,8 @@ public class player : MonoBehaviour
         var speedMultiplier = 1 - (woodCount / (float)backpackCapacity) * (1 - moveSpeedRateWhenFull);
         // 获取水平输入，乘以移动速度和倍率，保持垂直速度不变
         rb.velocity = new Vector2(Input.GetAxis("Horizontal") * moveSpeed * speedMultiplier, rb.velocity.y);
+
+        animator.SetBool(isWalkingParam, Mathf.Abs(rb.velocity.x) > 0.1f);
     }
 
     /// <summary>
@@ -148,8 +174,7 @@ public class player : MonoBehaviour
             Debug.Log($"地面检测到的碰撞体数量：{colliders.Length}，是否在地面：{isGrounded}");
         }
             
-        
-        
+        animator.SetBool(groundedParam, isGrounded);
 
     }
 
@@ -166,7 +191,27 @@ public class player : MonoBehaviour
             {
                 // 计算跳跃速度：背包满时跳跃速度降低，背包空时为基础跳跃速度
                 rb.velocity = new Vector2(rb.velocity.x, jumpV_instant * Mathf.Sqrt(1f - 0.9f * (woodCount / (float)backpackCapacity)));
+
+                // 触发起跳动画
+                animator.SetTrigger(startJumpTrigger);
             }
+        }
+    }
+
+    /// <summary>
+    /// 检测是否到达跳跃顶点（y轴速度从正数变为0或负数）
+    /// </summary>
+    private void CheckJumpApex()
+    {
+        // 检查上一帧y轴速度为正（在上升），当前y轴速度为0或负（到达顶点或开始下降）
+        if (previousVelocityY > 0 && rb.velocity.y <= 0)
+        {
+            // 触发到达顶点的动画
+            animator.SetTrigger(reachTheTopTrigger);
+        }
+        else
+        {
+            animator.ResetTrigger(reachTheTopTrigger);
         }
     }
     /// <summary>

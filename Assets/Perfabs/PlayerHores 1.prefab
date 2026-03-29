@@ -112,6 +112,10 @@ MonoBehaviour:
   backpackCapacity: 4
   woodCount: 4
   moveSpeedRateWhenFull: 0.5
+  isWalkingParam: IsWalking
+  groundedParam: Grounded
+  startJumpTrigger: StartJump
+  reachTheTopTrigger: ReachTheTop
 --- !u!114 &824956563963139101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,7 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerObject: {fileID: 0}
-  reloadSceneOnRespawn: 0
+  reloadSceneOnRespawn: 1
 --- !u!61 &1319232778135714008
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -169,7 +173,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.8696475, y: 5.146914}
+  m_Size: {x: 1.27, y: 5.146914}
   m_EdgeRadius: 0
 --- !u!50 &8626759034231231124
 Rigidbody2D:
