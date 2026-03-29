@@ -160,6 +160,61 @@ public class WoodPool : MonoBehaviour
     }
 
     /// <summary>
+    /// 将传入的木头物体纳入对象池管理范围
+    /// </summary>
+    /// <param name="externalWood">外部的木头物体（非池化创建的）</param>
+    /// <param name="isActive">物体当前是否为「活跃使用中」状态（true=加入活跃池，false=加入可用池）</param>
+    public void AddWoodToPoolManagement(GameObject externalWood, bool isActive = false)
+    {
+        // 空值校验
+        if (externalWood == null)
+        {
+            Debug.LogError("WoodPool: 传入的木头物体为空，无法纳入管理！");
+            return;
+        }
+
+        // 避免重复管理（如果已经在池里，直接返回）
+        if (activeWood.Contains(externalWood) || availableWood.Contains(externalWood))
+        {
+            Debug.LogWarning($"WoodPool: 物体 {externalWood.name} 已在对象池管理中，无需重复添加！");
+            return;
+        }
+
+        // 统一命名规范（便于识别池化对象）
+        if (!externalWood.name.StartsWith("Wood_Pooled"))
+        {
+            externalWood.name = $"Wood_Pooled_{externalWood.name}";
+        }
+
+        // 将物体父节点挂载到池容器（统一管理）
+        externalWood.transform.parent = poolContainer;
+
+        // 根据状态分类加入池管理：活跃态/可用态
+        if (isActive)
+        {
+            // 活跃态：加入activeWood集合，保持激活状态
+            externalWood.SetActive(true);
+            // 重置物理状态（避免外部物体带残留物理属性）
+            Rigidbody2D rb = externalWood.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.velocity = Vector2.zero;
+                rb.angularVelocity = 0f;
+                rb.isKinematic = false;
+            }
+            activeWood.Add(externalWood);
+        }
+        else
+        {
+            // 可用态：加入availableWood栈，失活并归位
+            externalWood.SetActive(false);
+            availableWood.Push(externalWood);
+        }
+
+        Debug.Log($"WoodPool: 物体 {externalWood.name} 已成功纳入对象池管理，当前状态：{(isActive ? "活跃使用中" : "可用待分配")}");
+    }
+
+    /// <summary>
     /// 获取当前池中可用的木头数量
     /// </summary>
     /// <returns>可用木头数量</returns>
