@@ -39,15 +39,24 @@ public class WoodPool : MonoBehaviour
     /// 单例实例
     /// </summary>
     private static WoodPool instance;
+    /// <summary>
+    /// 标记应用是否正在退出
+    /// </summary>
+    private static bool isApplicationQuitting = false;
 
     public static WoodPool Instance
     {
         get
         {
+            // 应用退出时，不创建新实例
+            if (isApplicationQuitting)
+                return null;
+
             if (instance == null)
             {
                 instance = FindObjectOfType<WoodPool>();
-                if (instance == null)
+                // 只在游戏运行时创建新实例，不在场景加载/卸载时创建
+                if (instance == null && Application.isPlaying)
                 {
                     GameObject poolObject = new GameObject("WoodPool");
                     instance = poolObject.AddComponent<WoodPool>();
@@ -92,7 +101,6 @@ public class WoodPool : MonoBehaviour
     {
         if (woodPrefab == null)
         {
-            Debug.LogError("WoodPool: woodPrefab 未绑定");
             return;
         }
 
@@ -148,6 +156,10 @@ public class WoodPool : MonoBehaviour
     public void ReturnWood(GameObject wood)
     {
         if (wood == null)
+            return;
+
+        // 场景卸载时，不进行归还操作
+        if (!UnityEngine.SceneManagement.SceneManager.GetActiveScene().isLoaded)
             return;
 
         if (!activeWood.Contains(wood))
@@ -271,16 +283,49 @@ public class WoodPool : MonoBehaviour
     /// </summary>
     public void ClearPool()
     {
-        foreach (var wood in availableWood)
+        // 只在运行时销毁对象，编辑模式下由 Unity 自动处理
+        if (Application.isPlaying)
         {
-            Destroy(wood);
+            foreach (var wood in availableWood)
+            {
+                Destroy(wood);
+            }
+            foreach (var wood in activeWood)
+            {
+                Destroy(wood);
+            }
         }
         availableWood.Clear();
-
-        foreach (var wood in activeWood)
-        {
-            Destroy(wood);
-        }
         activeWood.Clear();
+    }
+
+    /// <summary>
+    /// 应用退出时调用
+    /// </summary>
+    private void OnApplicationQuit()
+    {
+        isApplicationQuitting = true;
+    }
+
+    /// <summary>
+    /// 对象池销毁时清理所有资源
+    /// </summary>
+    private void OnDestroy()
+    {
+        // 场景卸载时清空对象池
+        if (!UnityEngine.SceneManagement.SceneManager.GetActiveScene().isLoaded)
+        {
+            // 清空集合，释放对象引用
+            // 子对象会由 Unity 自动销毁，无需手动调用 Destroy
+            availableWood.Clear();
+            activeWood.Clear();
+            poolContainer = null;
+
+            // 清除单例引用
+            if (instance == this)
+            {
+                instance = null;
+            }
+        }
     }
 }

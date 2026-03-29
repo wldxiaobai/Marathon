@@ -32,6 +32,10 @@ public class WoodPoolAutoRegister : MonoBehaviour
     /// </summary>
     private void OnDisable()
     {
+        // 场景卸载时，Unity已经在处理失活，无需手动操作
+        if (!UnityEngine.SceneManagement.SceneManager.GetActiveScene().isLoaded)
+            return;
+
         if (WoodPool.Instance == null || !isRegistered)
             return;
 
@@ -41,24 +45,16 @@ public class WoodPoolAutoRegister : MonoBehaviour
     }
 
     /// <summary>
-    /// 可选：当木头对象触发碰撞/生命周期结束时，主动失活以归还到池
-    /// 可根据你的业务逻辑调整触发条件（比如碰撞到地面、超时等）
-    /// </summary>
-    /// <param name="collision">碰撞信息</param>
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        // 示例：碰撞到标签为"Ground"的物体时，自动失活归还到池
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            gameObject.SetActive(false);
-        }
-    }
-
-    /// <summary>
     /// 防止对象被直接销毁，强制归还到对象池
+    /// 仅在非场景卸载时生效
     /// </summary>
     private void OnDestroy()
     {
+        // 场景卸载时，所有对象都会被销毁，无需归还到对象池
+        // 只在运行时场景中手动销毁对象时才归还
+        if (!UnityEngine.SceneManagement.SceneManager.GetActiveScene().isLoaded)
+            return;
+
         if (WoodPool.Instance != null && isRegistered)
         {
             WoodPool.Instance.ReturnWood(gameObject);
