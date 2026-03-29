@@ -67,6 +67,23 @@ public class RespawnManager : MonoBehaviour
             pendingRespawnAfterLoad = false;
             ApplyRespawn();
         }
+
+        // 处理来自LevelEndTrigger的玩家生成位置
+        if (LevelEndTrigger.NextScenePlayerSpawnPosition != Vector2.zero)
+        {
+            if (playerObject == null)
+            {
+                var p = FindObjectOfType<player>();
+                if (p != null) playerObject = p.gameObject;
+            }
+
+            if (playerObject != null)
+            {
+                playerObject.transform.position = LevelEndTrigger.NextScenePlayerSpawnPosition;
+            }
+
+            LevelEndTrigger.NextScenePlayerSpawnPosition = Vector2.zero;
+        }
     }
 
     public void SetCheckpoint(Vector3 worldPosition)

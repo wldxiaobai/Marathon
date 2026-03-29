@@ -204,10 +204,14 @@ public class player : MonoBehaviour
     private void CheckJumpApex()
     {
         // 检查上一帧y轴速度为正（在上升），当前y轴速度为0或负（到达顶点或开始下降）
-        if (previousVelocityY > 0 && rb.velocity.y <= 0 && !isGrounded)
+        if (previousVelocityY > 0 && rb.velocity.y <= 0)
         {
             // 触发到达顶点的动画
             animator.SetTrigger(reachTheTopTrigger);
+        }
+        else
+        {
+            animator.ResetTrigger(reachTheTopTrigger);
         }
     }
     /// <summary>
