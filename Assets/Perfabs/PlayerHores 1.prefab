@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 5398275976113156643}
   - component: {fileID: 376969886951367885}
   - component: {fileID: 8362638345640920332}
-  - component: {fileID: 8626759034231231124}
+  - component: {fileID: 824956563963139101}
   - component: {fileID: 1319232778135714008}
+  - component: {fileID: 8626759034231231124}
   - component: {fileID: 7522508463900841021}
   m_Layer: 3
   m_Name: PlayerHores 1
@@ -111,33 +112,20 @@ MonoBehaviour:
   backpackCapacity: 4
   woodCount: 4
   moveSpeedRateWhenFull: 0.5
---- !u!50 &8626759034231231124
-Rigidbody2D:
-  serializedVersion: 4
+--- !u!114 &824956563963139101
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 352504360187442514}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.01
-  m_GravityScale: 2
-  m_Material: {fileID: 6200000, guid: cc1447f5748ff964c8df9dee9cce08f8, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 4
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e175fbcb1818e74e94d550121bd441d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerObject: {fileID: 0}
+  reloadSceneOnRespawn: 0
 --- !u!61 &1319232778135714008
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -183,6 +171,33 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.8696475, y: 5.146914}
   m_EdgeRadius: 0
+--- !u!50 &8626759034231231124
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352504360187442514}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.01
+  m_GravityScale: 2
+  m_Material: {fileID: 6200000, guid: cc1447f5748ff964c8df9dee9cce08f8, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
 --- !u!95 &7522508463900841021
 Animator:
   serializedVersion: 5
