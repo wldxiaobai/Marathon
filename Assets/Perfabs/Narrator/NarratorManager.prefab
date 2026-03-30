@@ -53,6 +53,11 @@ MonoBehaviour:
   - {fileID: 3489640019313187734}
   narratorContent: "\u4E2D\u6587\u4E2D\u6587\u4E2D\u6587\u3002"
   typingSpeed: 30
+  enablePositionBounds: 1
+  boundMinX: -950
+  boundMaxX: 350
+  boundMinY: -300
+  boundMaxY: 150
 --- !u!1 &2813882273224331415
 GameObject:
   m_ObjectHideFlags: 0

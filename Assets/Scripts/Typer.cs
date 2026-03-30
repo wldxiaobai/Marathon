@@ -25,6 +25,23 @@ public class Typer : Globalizer<Typer>
     [Tooltip("打字速度（字符/秒）")]
     private float typingSpeed = 50f;
 
+    [Header("Position Bounds")]
+    [SerializeField]
+    [Tooltip("是否启用旁白位置边界限制")]
+    private bool enablePositionBounds = false;
+    [SerializeField]
+    [Tooltip("旁白位置X轴最小值（UI坐标）")]
+    private float boundMinX = -400f;
+    [SerializeField]
+    [Tooltip("旁白位置X轴最大值（UI坐标）")]
+    private float boundMaxX = 400f;
+    [SerializeField]
+    [Tooltip("旁白位置Y轴最小值（UI坐标）")]
+    private float boundMinY = -300f;
+    [SerializeField]
+    [Tooltip("旁白位置Y轴最大值（UI坐标）")]
+    private float boundMaxY = 300f;
+
     private TextMeshProUGUI textComponent;
     private RectTransform narratorRectTransform;
     private List<RectTransform> backgroundRectTransforms;
@@ -264,6 +281,32 @@ public class Typer : Globalizer<Typer>
     }
 
     /// <summary>
+    /// 设置旁白位置边界
+    /// </summary>
+    public void SetPositionBounds(bool enable, float minX, float maxX, float minY, float maxY)
+    {
+        enablePositionBounds = enable;
+        boundMinX = minX;
+        boundMaxX = maxX;
+        boundMinY = minY;
+        boundMaxY = maxY;
+    }
+
+    /// <summary>
+    /// 应用位置边界约束
+    /// </summary>
+    private Vector2 ApplyPositionBounds(Vector2 position)
+    {
+        if (!enablePositionBounds)
+            return position;
+
+        return new Vector2(
+            Mathf.Clamp(position.x, boundMinX, boundMaxX),
+            Mathf.Clamp(position.y, boundMinY, boundMaxY)
+        );
+    }
+
+    /// <summary>
     /// 将世界坐标同步到UI坐标
     /// </summary>
     private void SyncWorldPositionToUI()
@@ -298,6 +341,9 @@ public class Typer : Globalizer<Typer>
 
         // 应用位置偏移
         localPoint += narratorPositionOffset;
+
+        // 应用位置边界约束
+        localPoint = ApplyPositionBounds(localPoint);
 
         // 设置文字位置
         narratorRectTransform.anchoredPosition = localPoint;

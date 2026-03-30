@@ -86,6 +86,17 @@ public class NarratorTrigger : MonoBehaviour
 
         // 显示旁白
         typer.ShowNarrator();
+
+        // 调用虚方法，允许子类在旁白显示后执行额外逻辑
+        OnNarratorDisplayed();
+    }
+
+    /// <summary>
+    /// 虚方法：旁白显示后调用，子类可重写以扩展功能
+    /// </summary>
+    protected virtual void OnNarratorDisplayed()
+    {
+        // 子类可重写此方法
     }
 
     /// <summary>

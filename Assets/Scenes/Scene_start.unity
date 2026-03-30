@@ -296,18 +296,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Black: {fileID: 891258681}
   Anim: {fileID: 1790957625}
-  fadeDuration: 0.5
+  fadeDuration: 0
   comicPages:
   - sprite: {fileID: 21300000, guid: c3be6f9bf159b1a41a1b2880155de46b, type: 3}
-    duration: 4
+    duration: 6
   - sprite: {fileID: 21300000, guid: 5f78c34e330238a4e9d96c2af0242ab4, type: 3}
-    duration: 2
+    duration: 4
   - sprite: {fileID: 21300000, guid: 5123f982ef46dde42b202f75c5b4bc0a, type: 3}
-    duration: 2
+    duration: 4
   - sprite: {fileID: 21300000, guid: 08f772e4feec3f842865d70e01677ca6, type: 3}
-    duration: 2
+    duration: 4
   - sprite: {fileID: 21300000, guid: cf9027897087d40428ab90a394b0deb6, type: 3}
-    duration: 3
+    duration: 5
   autoPlayOnStart: 1
 --- !u!4 &798698991
 Transform:

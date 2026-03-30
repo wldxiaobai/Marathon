@@ -284,10 +284,10 @@ public class MouseWoodController : MonoBehaviour
             polySource.offset = polyTarget.offset;
         }
 
-        // 使用OverlapCollider检测是否有碰撞，忽略触发器（例如检查点）或带有 Checkpoint 组件的碰撞体
+        // 使用OverlapCollider检测是否有碰撞，排除所有Trigger碰撞箱
         Collider2D[] colliders = new Collider2D[10];
         ContactFilter2D filter = new ContactFilter2D();
-        filter.useTriggers = true; // we still collect triggers but will ignore checkpoints explicitly
+        filter.useTriggers = false; // 排除Trigger碰撞箱
         int colliderCount = Physics2D.OverlapCollider(tempCollider, filter, colliders);
 
         // 清理临时对象
@@ -299,13 +299,8 @@ public class MouseWoodController : MonoBehaviour
             Collider2D collider = colliders[i];
             if (collider == null) continue;
 
-            // 忽略检查点触发器对放置判断的影响
-            if (collider.GetComponent<Checkpoint>() != null) continue;
-
-            // 如果有其他Rigidbody2D，说明会与动态物体发生物理冲突
-            Collider2D rb = collider.GetComponent<Collider2D>();
-            if (rb != null)
-                return true;
+            // 由于已排除Trigger，任何返回的碰撞体都是实体碰撞体，说明会产生碰撞
+            return true;
         }
 
         return false;
